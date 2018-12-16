@@ -1,16 +1,16 @@
-import { Component, ViewChild, ElementRef, OnInit } from '@angular/core';
-import { DataTableDataSource } from './data-table/data-table-datasource';
-import { DataService } from './service/data.service';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { MatPaginator, MatSort } from '@angular/material';
-import { fromEvent } from 'rxjs';
+import { DataTableDataSource } from './data-table-datasource';
+import { DataService } from '../service/data.service';
 import { HttpClient } from '@angular/common/http';
+import { fromEvent } from 'rxjs';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  selector: 'app-data-table',
+  templateUrl: './data-table.component.html',
+  styleUrls: ['./data-table.component.scss'],
 })
-export class AppComponent implements OnInit {
+export class DataTableComponent implements OnInit {
   displayedColumns = ['gender', 'name', 'age'];
   dataSource: DataTableDataSource | null;
   dataBase: DataService | null;
@@ -42,4 +42,5 @@ export class AppComponent implements OnInit {
         this.dataSource.filter = this.filter.nativeElement.value;
       });
   }
+
 }

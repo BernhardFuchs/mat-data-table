@@ -3,7 +3,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, of, BehaviorSubject } from 'rxjs';
 import { TableDataModel } from '../model/table-data.model';
 import { map, switchMap } from 'rxjs/operators';
-import { results } from "../data-table/data-table-test-data";
+import { results } from './data-table-test-data';
 
 @Injectable()
 export class DataService {
@@ -16,6 +16,9 @@ export class DataService {
     console.log('####DataService constructor this.mapped: ', this.mapped);
     this.mapped = results;
     console.log('####DataService constructor this.mapped: ', this.mapped);
+    console.log('####DataService constructor this.dataChange: ', this.dataChange);
+    console.log('####DataService constructor this.dataChange.value: ', this.dataChange.value);
+    console.log('####DataService constructor this.data.values: ', this.data.values);
   }
 
   get data(): TableDataModel[] {
@@ -24,6 +27,9 @@ export class DataService {
 
   getAllIssues(): void {
     this.httpClient.get<TableDataModel[]>(this.API_URL).subscribe(data => {
+      console.log('####DataService getAllIssues this.dataChange: ', this.dataChange);
+    console.log('####DataService getAllIssues this.dataChange.value: ', this.dataChange.value);
+    console.log('####DataService getAllIssues this.data.values: ', this.data.values);
       console.log('####DataService getAllIssues data:', data);
       console.log('####DataService getAllIssues mapped:', this.mapped);
       this.dataChange.next(this.mapped);

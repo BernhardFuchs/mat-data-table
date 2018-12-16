@@ -31,7 +31,6 @@ export const results = [
   },
 ];
 export const mediumSample = [
- 
   {
     gender: 'female',
     name: 'amanda',

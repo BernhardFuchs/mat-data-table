@@ -1,31 +1,29 @@
-import { Component, ViewChild, ElementRef, OnInit } from '@angular/core';
-import { DataTableDataSource } from './service/data-table-datasource';
-import { DataService } from './service/data.service';
-import { MatPaginator, MatSort } from '@angular/material';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {DataService} from './service/data.service';
+import {HttpClient} from '@angular/common/http';
+import {MatPaginator, MatSort} from '@angular/material';
 import { fromEvent } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import {DataTableDataSource} from './service/data-table-datasource';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
+
 export class AppComponent implements OnInit {
   displayedColumns = ['gender', 'name', 'age'];
+  dataService: DataService | null;
   dataSource: DataTableDataSource | null;
-  exampleDatabase: DataService | null;
 
-  constructor(public httpClient: HttpClient,
-    public dataService: DataService
-    ) {}
+  constructor(public httpClient: HttpClient) {}
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild('filter') filter: ElementRef;
-  /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
 
   ngOnInit() {
-    console.log('####AppComponent onInit this.exampleDataBase: ', this.exampleDatabase);
+    console.log('####AppComponent onInit this.exampleDataBase: ', this.dataService);
     console.log('####AppComponent onInit this.dataSource: ', this.dataSource);
     console.log('####AppComponent onInit this.displayedColumns: ', this.displayedColumns);
     console.log('####AppComponent onInit this.filter: ', this.filter);
@@ -35,7 +33,7 @@ export class AppComponent implements OnInit {
   }
 
   refresh(): void {
-    console.log('####AppComponent refresh this.exampleDataBase: ', this.exampleDatabase);
+    console.log('####AppComponent refresh this.exampleDataBase: ', this.dataService);
     console.log('####AppComponent refresh this.dataSource: ', this.dataSource);
     console.log('####AppComponent refresh this.displayedColumns: ', this.displayedColumns);
     console.log('####AppComponent refresh this.filter: ', this.filter);
@@ -45,13 +43,11 @@ export class AppComponent implements OnInit {
   }
 
   public loadData(): void {
-    this.exampleDatabase = new DataService(this.httpClient);
-    console.log('####AppComponent loadData this.exampleDataBase: ', this.exampleDatabase);
-    this.dataSource = new DataTableDataSource(this.exampleDatabase, this.paginator, this.sort);
-    console.log('####AppComponent loadData this.dataService: ', this.dataService);
+    this.dataService = new DataService(this.httpClient);
+    console.log('####AppComponent loadData this.exampleDataBase: ', this.dataService);
+    this.dataSource = new DataTableDataSource(this.dataService, this.paginator, this.sort);
     fromEvent(this.filter.nativeElement, 'keyup')
       .subscribe(() => {
-        console.log('####AppComponent loadData fromEvent subscribe this.dataService: ', this.dataService);
         if (!this.dataSource) {
           console.log('####AppComponent loadData fromEvent subscribe in if');
           return;
